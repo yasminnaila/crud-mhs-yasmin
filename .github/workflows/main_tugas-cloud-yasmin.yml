@@ -64,7 +64,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'tugas-cloud-yasmin'
+          app-name: 'tugas-cloud-yasmin3'
           slot-name: 'Production'
           package: .
           
