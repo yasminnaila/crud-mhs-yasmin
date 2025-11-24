@@ -2,7 +2,24 @@
 // File ini untuk setup database pertama kali
 // Hapus file ini setelah database berhasil dibuat!
 
-require_once 'config/database.php';
+// Connect tanpa database untuk create database
+if (getenv('WEBSITE_SITE_NAME')) {
+    // Azure Environment
+    $host = getenv('DB_HOST') ?: 'localhost';
+    $user = getenv('DB_USER') ?: 'root';
+    $pass = getenv('DB_PASS') ?: '';
+    
+    // Connect dengan SSL tanpa database
+    $conn = mysqli_init();
+    mysqli_ssl_set($conn, NULL, NULL, NULL, NULL, NULL);
+    mysqli_real_connect($conn, $host, $user, $pass, NULL, 3306, NULL, MYSQLI_CLIENT_SSL);
+} else {
+    // Local Environment
+    $host = 'localhost';
+    $user = 'root';
+    $pass = '';
+    $conn = mysqli_connect($host, $user, $pass);
+}
 
 echo "Testing database connection...<br>";
 
