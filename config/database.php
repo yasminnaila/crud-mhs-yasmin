@@ -15,8 +15,17 @@ if (getenv('WEBSITE_SITE_NAME')) {
     define('DB_NAME', 'crud_yasmin');
 }
 
-// Membuat koneksi
-$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+// Membuat koneksi dengan SSL
+$conn = mysqli_init();
+
+// Set SSL options untuk Azure MySQL
+if (getenv('WEBSITE_SITE_NAME')) {
+    mysqli_ssl_set($conn, NULL, NULL, NULL, NULL, NULL);
+    mysqli_real_connect($conn, DB_HOST, DB_USER, DB_PASS, DB_NAME, 3306, NULL, MYSQLI_CLIENT_SSL);
+} else {
+    // Local connection tanpa SSL
+    $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+}
 
 // Cek koneksi
 if (!$conn) {
